@@ -12,7 +12,7 @@
 
 ### 案例参考：
 
-[官方案例网址](http://www.itween.pixelplacement.com/examples.php)
+[官方案例网址](http://www.pixelplacement.com/itween/examples.php)
 
 ## 根据需求搭建此案例场景
 
@@ -52,8 +52,8 @@ public class MouseDemo : MonoBehaviour {
 
     public GameObject obj;  //持有一个预制体,为球
     GameObject crosshair;   //持有一个游戏对象，为准星
-	// Use this for initialization
     Hashtable hashtable;
+    
 	void Start () {
         crosshair = GameObject.Find("crosshair").gameObject;
         hashtable = new Hashtable();
