@@ -1,0 +1,136 @@
+# PunchAndStab案例讲解
+
+*了解PunchAndStab案例（可以通过官网查看）
+
+* 根据需求搭建此案例场景
+
+* 分析案例功能模块
+
+* 完成功能演示项目
+
+## 了解PunchAndStab案例
+
+### 案例参考：
+
+[官方案例网址](http://www.itween.pixelplacement.com/examples.php)
+
+## 根据需求搭建此案例场景
+
+### 基本步骤：
+
+首先导入素材 —— 制作场景所需对象 —— 完成搭建场景
+
+## 分析案例功能模块
+
+### 主要功能模块
+
+* 小球在地板上做往复运动
+
+* 运动到右边时，三个胶囊体向右振动
+
+* 游动到左边时，三个胶囊体向左振动
+
+## 完成功能演示项目
+
+* 胶囊体要放在空物体中，并且将胶囊体的一端位于空物体位置
+
+### 核心功能实现
+
+* 利用API编写相关代码,代码如下所示：
+
+将脚本挂载都小球上
+
+```C#
+using UnityEngine;
+using System.Collections;
+
+public class PunchAndStab : MonoBehaviour {
+
+    public GameObject obj1;
+    public GameObject obj2;
+    public GameObject obj3;
+
+
+	// Use this for initialization
+	void Start () {
+        obj1 = GameObject.Find("Main Camera/Q1");
+        obj2 = GameObject.Find("Main Camera/Q2");
+        obj3 = GameObject.Find("Main Camera/Q3");
+
+
+	}
+    double speed = 6;
+    string MoveStr = "MoveTo";
+    float tempTime;
+	// Update is called once per frame
+	void Update () {
+        //tempTime += Time.deltaTime;
+        //if (tempTime >4.2f)
+        //{
+        //    iTween.MoveBy(this.gameObject, iTween.Hash("z", 6, "time", 2, "easetype", iTween.EaseType.easeInCubic, "oncomplete", "MoveTo"));
+        //    iTween.MoveBy(this.gameObject, iTween.Hash("z", -6, "time", 2, "delay", 2.1f, "easetype", iTween.EaseType.easeInCubic, "oncomplete", "MoveBack"));
+        //    tempTime = 0;
+        //}
+
+        iTween.MoveBy(this.gameObject, iTween.Hash("z", speed, "time", 2, "easetype", iTween.EaseType.easeInCubic, "oncomplete", MoveStr));
+       
+       // iTween.MoveBy(this.gameObject, iTween.Hash("z", -6, "time", 2, "delay", 4f, "easetype", iTween.EaseType.easeInCubic, "oncomplete", "MoveBack"));
+	}
+
+    void Move ()
+    {
+       
+        iTween.MoveUpdate(this.gameObject, iTween.Hash("z", 6, "time", 2, "easetype", iTween.EaseType.easeInCubic, "oncomplete", "MoveTo"));
+        iTween.MoveUpdate(this.gameObject, iTween.Hash("z", -6, "time", 2, "delay", 2f, "easetype", iTween.EaseType.easeInCubic, "oncomplete", "MoveBack"));
+    }
+
+    void MoveTo()
+    {
+        speed = -speed;
+        MoveStr = "MoveBack";
+        
+        obj1.GetComponent<RotateMove>().RotateForward();
+        obj2.GetComponent<RotateMove>().RotateForward();
+        obj3.GetComponent<RotateMove>().RotateForward();
+    }
+    void MoveBack()
+    {
+        speed = -speed;
+        MoveStr = "MoveTo";
+        obj1.GetComponent<RotateMove>().RotateBack();
+        obj2.GetComponent<RotateMove>().RotateBack();
+        obj3.GetComponent<RotateMove>().RotateBack();
+    }
+    
+}
+
+```
+
+将脚本挂载到三个空物体上
+
+```C#
+using UnityEngine;
+using System.Collections;
+
+public class RotateMove : MonoBehaviour {
+
+	// Use this for initialization
+	void Start () {
+	
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	
+	}
+    public void RotateForward()
+    {
+        iTween.PunchRotation(this.gameObject, iTween.Hash("y", -30, "time", 1));
+    }
+    public void RotateBack()
+    {
+        iTween.PunchRotation(this.gameObject, iTween.Hash("y", 30, "time", 1));
+    }
+}
+
+```
